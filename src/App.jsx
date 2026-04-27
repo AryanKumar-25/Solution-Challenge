@@ -1,8 +1,11 @@
+import { useState, useCallback } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import { ToastProvider } from "./context/ToastContext";
 import ProtectedRoute from "./components/layout/ProtectedRoute";
 import LoadingSpinner from "./components/common/LoadingSpinner";
+import SplashScreen from "./components/common/SplashScreen";
+import LandingPage from "./pages/LandingPage";
 
 // Auth pages
 import LoginPage from "./pages/auth/LoginPage";
@@ -26,7 +29,7 @@ function AppRoutes() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-surface-50">
+      <div className="min-h-screen flex items-center justify-center" style={{ background: "#E8F4FD" }}>
         <LoadingSpinner size="lg" text="Loading VolunteerBridge..." />
       </div>
     );
@@ -35,6 +38,9 @@ function AppRoutes() {
   return (
     <Routes>
       {/* Public */}
+      <Route path="/" element={user ? (
+        userRole === "ngo" ? <Navigate to="/ngo/dashboard" /> : <Navigate to="/volunteer/home" />
+      ) : <LandingPage />} />
       <Route path="/login" element={user ? (
         userRole === "ngo" ? <Navigate to="/ngo/dashboard" /> : <Navigate to="/volunteer/home" />
       ) : <LoginPage />} />
@@ -72,17 +78,23 @@ function AppRoutes() {
       } />
 
       {/* Default */}
-      <Route path="*" element={<Navigate to="/login" replace />} />
+      <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
 }
 
 export default function App() {
+  const [splashDone, setSplashDone] = useState(false);
+  const handleSplashComplete = useCallback(() => setSplashDone(true), []);
+
   return (
     <Router>
       <AuthProvider>
         <ToastProvider>
-          <AppRoutes />
+          {!splashDone && <SplashScreen onComplete={handleSplashComplete} />}
+          <div style={{ opacity: splashDone ? 1 : 0, transition: "opacity 0.3s ease" }}>
+            <AppRoutes />
+          </div>
         </ToastProvider>
       </AuthProvider>
     </Router>

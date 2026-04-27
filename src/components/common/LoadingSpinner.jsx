@@ -1,19 +1,33 @@
 export default function LoadingSpinner({ size = "md", text = "" }) {
-  const sizeClasses = {
-    sm: "w-5 h-5",
-    md: "w-8 h-8",
-    lg: "w-12 h-12",
-  };
+  const sizes = { sm: 20, md: 32, lg: 48 };
+  const s = sizes[size] || sizes.md;
 
   return (
-    <div className="flex flex-col items-center justify-center gap-3 py-8">
-      <div className={`${sizeClasses[size]} relative`}>
-        <div className="absolute inset-0 rounded-full border-2 border-primary/20" />
-        <div className="absolute inset-0 rounded-full border-2 border-transparent border-t-primary animate-spin" />
+    <div style={{
+      display: "flex", flexDirection: "column", alignItems: "center",
+      justifyContent: "center", gap: 12, padding: "32px 0",
+    }}>
+      <div style={{ width: s, height: s, position: "relative" }}>
+        <div style={{
+          position: "absolute", inset: 0, borderRadius: "50%",
+          border: "2.5px solid rgba(107,78,255,0.15)",
+        }} />
+        <div style={{
+          position: "absolute", inset: 0, borderRadius: "50%",
+          border: "2.5px solid transparent", borderTopColor: "#6B4EFF",
+          animation: "spin 0.8s linear infinite",
+        }} />
       </div>
       {text && (
-        <p className="text-sm text-gray-500 font-medium animate-pulse-soft">{text}</p>
+        <p style={{
+          fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 500,
+          fontSize: 14, color: "#6B7280",
+          animation: "pulse 2s ease-in-out infinite",
+        }}>
+          {text}
+        </p>
       )}
+      <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
     </div>
   );
 }

@@ -1,7 +1,43 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { signUpUser, signInUser } from "../../services/authService";
-import { Heart, Mail, Lock, User, ArrowRight, Loader2 } from "lucide-react";
+import { Heart, Mail, Lock, User, ArrowRight, Loader2, Eye, EyeOff } from "lucide-react";
+
+/* ── Sign In Illustration (two people high-fiving) ──── */
+function SignInIllustration() {
+  return (
+    <svg viewBox="0 0 300 280" fill="none" style={{ width: "100%", maxWidth: 280 }}>
+      {/* Ground */}
+      <ellipse cx="150" cy="260" rx="120" ry="14" fill="rgba(255,255,255,0.15)" />
+      {/* Person 1 */}
+      <circle cx="100" cy="150" r="22" fill="#FDBCB4" stroke="#1A1A2E" strokeWidth="2"/>
+      <rect x="82" y="172" width="36" height="50" rx="10" fill="#FF6B35" stroke="#1A1A2E" strokeWidth="2"/>
+      <rect x="88" y="222" width="12" height="22" rx="5" fill="#1A1A2E"/>
+      <rect x="104" y="222" width="12" height="22" rx="5" fill="#1A1A2E"/>
+      <circle cx="93" cy="147" r="3" fill="#1A1A2E"/>
+      <circle cx="107" cy="147" r="3" fill="#1A1A2E"/>
+      <path d="M95 156C95 156 100 160 105 156" stroke="#1A1A2E" strokeWidth="1.5" strokeLinecap="round"/>
+      {/* Person 2 */}
+      <circle cx="200" cy="150" r="22" fill="#C68642" stroke="#1A1A2E" strokeWidth="2"/>
+      <rect x="182" y="172" width="36" height="50" rx="10" fill="#FFD046" stroke="#1A1A2E" strokeWidth="2"/>
+      <rect x="188" y="222" width="12" height="22" rx="5" fill="#1A1A2E"/>
+      <rect x="204" y="222" width="12" height="22" rx="5" fill="#1A1A2E"/>
+      <circle cx="193" cy="147" r="3" fill="#1A1A2E"/>
+      <circle cx="207" cy="147" r="3" fill="#1A1A2E"/>
+      <path d="M195 156C195 156 200 160 205 156" stroke="#1A1A2E" strokeWidth="1.5" strokeLinecap="round"/>
+      {/* High-five hands */}
+      <rect x="118" y="180" width="28" height="7" rx="3.5" fill="#FDBCB4" stroke="#1A1A2E" strokeWidth="1.5" transform="rotate(-15 118 180)"/>
+      <rect x="154" y="176" width="28" height="7" rx="3.5" fill="#C68642" stroke="#1A1A2E" strokeWidth="1.5" transform="rotate(15 154 176)"/>
+      {/* Sparkle */}
+      <path d="M150 130L152 136L158 137L152 139L150 145L148 139L142 137L148 136Z" fill="#FFD046" stroke="#1A1A2E" strokeWidth="1"/>
+      <circle cx="130" cy="130" r="3" fill="white" opacity="0.5"/>
+      <circle cx="170" cy="125" r="2" fill="white" opacity="0.4"/>
+      {/* Stars */}
+      <path d="M60 120L62 125L67 126L62 128L60 133L58 128L53 126L58 125Z" fill="white" opacity="0.3"/>
+      <path d="M240 110L241 114L246 115L241 116L240 120L239 116L234 115L239 114Z" fill="white" opacity="0.25"/>
+    </svg>
+  );
+}
 
 export default function LoginPage() {
   const [isSignUp, setIsSignUp] = useState(false);
@@ -11,6 +47,7 @@ export default function LoginPage() {
   const [role, setRole] = useState("ngo");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -58,79 +95,122 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex" id="login-page">
-      {/* Left panel - branding */}
-      <div className="hidden lg:flex lg:w-1/2 bg-gradient-hero relative overflow-hidden items-center justify-center p-12">
-        {/* Decorative circles */}
-        <div className="absolute top-10 left-10 w-64 h-64 rounded-full bg-white/5 blur-xl" />
-        <div className="absolute bottom-20 right-10 w-96 h-96 rounded-full bg-accent/10 blur-2xl" />
-        <div className="absolute top-1/2 left-1/4 w-32 h-32 rounded-full bg-white/5" />
+    <div style={{ minHeight: "100vh", display: "flex" }} id="login-page">
+      {/* ── Left panel — illustrated ── */}
+      <div
+        style={{
+          width: "45%",
+          background: "#6B4EFF",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          padding: 48,
+          position: "relative",
+          overflow: "hidden",
+        }}
+        className="hidden lg:flex"
+      >
+        {/* Scattered doodles */}
+        <svg style={{ position: "absolute", top: "10%", left: "8%", opacity: 0.15 }} width="20" height="20" viewBox="0 0 20 20">
+          <path d="M10 1L12 7L18 8L12 10L10 16L8 10L2 8L8 7Z" fill="white"/>
+        </svg>
+        <svg style={{ position: "absolute", bottom: "15%", right: "12%", opacity: 0.12 }} width="16" height="16" viewBox="0 0 16 16">
+          <circle cx="8" cy="8" r="3" fill="white"/>
+        </svg>
+        <svg style={{ position: "absolute", top: "55%", left: "15%", opacity: 0.1 }} width="10" height="10" viewBox="0 0 10 10">
+          <circle cx="5" cy="5" r="4" fill="white"/>
+        </svg>
+        <svg style={{ position: "absolute", top: "30%", right: "20%", opacity: 0.1 }} width="14" height="14" viewBox="0 0 14 14">
+          <path d="M7 1L8.5 5L13 6L8.5 7.5L7 11L5.5 7.5L1 6L5.5 5Z" fill="white"/>
+        </svg>
 
-        <div className="relative z-10 text-center max-w-md">
-          <div className="w-20 h-20 rounded-2xl bg-accent flex items-center justify-center mx-auto mb-8 shadow-lg">
-            <Heart className="w-10 h-10 text-white" fill="currentColor" />
-          </div>
-          <h1 className="text-4xl font-bold text-white mb-4 tracking-tight">
-            VolunteerBridge
-          </h1>
-          <p className="text-white/70 text-lg leading-relaxed">
-            Connecting NGOs with volunteers through intelligent matching. 
-            Prioritize community needs and coordinate impact efficiently.
-          </p>
+        <div style={{ animation: "float 4s ease-in-out infinite" }}>
+          <SignInIllustration />
+        </div>
 
-          <div className="mt-12 grid grid-cols-3 gap-4 text-center">
-            <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-4">
-              <div className="text-3xl font-bold text-accent">AI</div>
-              <div className="text-white/60 text-xs mt-1">Smart Scoring</div>
-            </div>
-            <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-4">
-              <div className="text-3xl font-bold text-accent">📍</div>
-              <div className="text-white/60 text-xs mt-1">Map Tracking</div>
-            </div>
-            <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-4">
-              <div className="text-3xl font-bold text-accent">🤝</div>
-              <div className="text-white/60 text-xs mt-1">Auto Match</div>
-            </div>
-          </div>
+        <h2 style={{
+          fontFamily: "'Nunito', sans-serif", fontWeight: 800, fontSize: 28,
+          color: "white", marginTop: 24, textAlign: "center",
+        }}>
+          Together we can do more.
+        </h2>
+
+        <div style={{ display: "flex", gap: 10, marginTop: 24, flexWrap: "wrap", justifyContent: "center" }}>
+          {["✓ Free to join", "✓ AI matching", "✓ Real impact"].map((badge) => (
+            <span
+              key={badge}
+              style={{
+                padding: "6px 16px", borderRadius: 999, background: "rgba(255,255,255,0.15)",
+                color: "white", fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 500,
+                fontSize: 13, backdropFilter: "blur(8px)",
+              }}
+            >
+              {badge}
+            </span>
+          ))}
         </div>
       </div>
 
-      {/* Right panel - form */}
-      <div className="flex-1 flex items-center justify-center p-6 lg:p-12 bg-surface-50">
-        <div className="w-full max-w-md animate-slide-up">
+      {/* ── Right panel — form ── */}
+      <div
+        style={{
+          flex: 1,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          padding: "40px 24px",
+          background: "white",
+        }}
+      >
+        <div style={{ width: "100%", maxWidth: 440, animation: "fadeUp 0.5s ease-out" }}>
           {/* Mobile logo */}
-          <div className="lg:hidden flex items-center gap-3 mb-8">
-            <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center">
-              <Heart className="w-5 h-5 text-white" fill="currentColor" />
+          <div className="lg:hidden" style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 32 }}>
+            <div style={{ width: 40, height: 40, borderRadius: 12, background: "#6B4EFF", display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <Heart size={20} color="white" fill="white" />
             </div>
-            <span className="text-xl font-bold text-primary">VolunteerBridge</span>
+            <span style={{ fontFamily: "'Nunito', sans-serif", fontWeight: 800, fontSize: 20, color: "#6B4EFF" }}>
+              VolunteerBridge
+            </span>
           </div>
 
-          <h2 className="text-2xl font-bold text-gray-900 mb-1">
-            {isSignUp ? "Create your account" : "Welcome back"}
+          {/* Desktop small logo */}
+          <div className="hidden lg:flex" style={{ alignItems: "center", gap: 8, marginBottom: 32 }}>
+            <div style={{ width: 32, height: 32, borderRadius: 10, background: "#6B4EFF", display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <Heart size={16} color="white" fill="white" />
+            </div>
+            <span style={{ fontFamily: "'Nunito', sans-serif", fontWeight: 800, fontSize: 16, color: "#6B4EFF" }}>
+              VolunteerBridge
+            </span>
+          </div>
+
+          <h2 style={{ fontFamily: "'Nunito', sans-serif", fontWeight: 900, fontSize: 32, color: "#1A1A2E", marginBottom: 4 }}>
+            {isSignUp ? "Create your account ✨" : "Welcome back 👋"}
           </h2>
-          <p className="text-gray-500 mb-8">
-            {isSignUp
-              ? "Join the volunteer coordination platform"
-              : "Sign in to your dashboard"}
+          <p style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 400, fontSize: 15, color: "#6B7280", marginBottom: 32 }}>
+            {isSignUp ? "Join the volunteer coordination platform" : "Sign in and start making a difference"}
           </p>
 
           {error && (
-            <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl text-red-700 text-sm">
+            <div style={{
+              marginBottom: 24, padding: 14, background: "#FFE8F2", border: "1.5px solid #FF4D8D",
+              borderRadius: 12, color: "#1A1A2E", fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 14,
+            }}>
               {error}
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-5">
+          <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 20 }}>
             {isSignUp && (
               <div>
                 <label className="input-label" htmlFor="displayName">Full Name</label>
-                <div className="relative">
-                  <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                <div style={{ position: "relative" }}>
+                  <User size={18} color="#9CA3AF" style={{ position: "absolute", left: 14, top: "50%", transform: "translateY(-50%)" }} />
                   <input
                     id="displayName"
                     type="text"
-                    className="input-field !pl-11"
+                    className="input-field"
+                    style={{ paddingLeft: 42 }}
                     placeholder="Enter your name"
                     value={displayName}
                     onChange={(e) => setDisplayName(e.target.value)}
@@ -142,12 +222,13 @@ export default function LoginPage() {
 
             <div>
               <label className="input-label" htmlFor="email">Email</label>
-              <div className="relative">
-                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+              <div style={{ position: "relative" }}>
+                <Mail size={18} color="#9CA3AF" style={{ position: "absolute", left: 14, top: "50%", transform: "translateY(-50%)" }} />
                 <input
                   id="email"
                   type="email"
-                  className="input-field !pl-11"
+                  className="input-field"
+                  style={{ paddingLeft: 42 }}
                   placeholder="you@example.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -158,48 +239,85 @@ export default function LoginPage() {
 
             <div>
               <label className="input-label" htmlFor="password">Password</label>
-              <div className="relative">
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+              <div style={{ position: "relative" }}>
+                <Lock size={18} color="#9CA3AF" style={{ position: "absolute", left: 14, top: "50%", transform: "translateY(-50%)" }} />
                 <input
                   id="password"
-                  type="password"
-                  className="input-field !pl-11"
+                  type={showPassword ? "text" : "password"}
+                  className="input-field"
+                  style={{ paddingLeft: 42, paddingRight: 44 }}
                   placeholder="••••••••"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
                   minLength={6}
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  style={{
+                    position: "absolute", right: 12, top: "50%", transform: "translateY(-50%)",
+                    background: "none", border: "none", cursor: "pointer", padding: 4,
+                    color: "#9CA3AF", display: "flex",
+                  }}
+                >
+                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
               </div>
+              {!isSignUp && (
+                <div style={{ textAlign: "right", marginTop: 6 }}>
+                  <button type="button" style={{
+                    background: "none", border: "none", cursor: "pointer",
+                    fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 500, fontSize: 13,
+                    color: "#6B4EFF",
+                  }}>
+                    Forgot password?
+                  </button>
+                </div>
+              )}
             </div>
 
             {isSignUp && (
               <div>
                 <label className="input-label">I am a...</label>
-                <div className="grid grid-cols-2 gap-3">
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
                   <button
                     type="button"
                     onClick={() => setRole("ngo")}
-                    className={`p-4 rounded-xl border-2 transition-all duration-200 text-center
-                      ${role === "ngo"
-                        ? "border-primary bg-primary-50 text-primary"
-                        : "border-gray-200 text-gray-500 hover:border-gray-300"
-                      }`}
+                    style={{
+                      padding: 16, borderRadius: 16, textAlign: "center", cursor: "pointer",
+                      border: `2px solid ${role === "ngo" ? "#6B4EFF" : "#E5E7EB"}`,
+                      background: role === "ngo" ? "#EDE9FF" : "white",
+                      transition: "all 0.2s ease", position: "relative",
+                    }}
                   >
-                    <div className="text-2xl mb-1">🏢</div>
-                    <div className="text-sm font-semibold">NGO Coordinator</div>
+                    {role === "ngo" && (
+                      <div style={{ position: "absolute", top: 8, right: 8, width: 18, height: 18, borderRadius: 99, background: "#6B4EFF", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                        <svg width="10" height="10" viewBox="0 0 10 10"><path d="M2 5L4 7L8 3" stroke="white" strokeWidth="1.5" fill="none" strokeLinecap="round"/></svg>
+                      </div>
+                    )}
+                    <div style={{ fontSize: 28, marginBottom: 4 }}>🏢</div>
+                    <div style={{ fontFamily: "'Nunito', sans-serif", fontWeight: 700, fontSize: 15, color: "#1A1A2E" }}>NGO / Coordinator</div>
+                    <div style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 400, fontSize: 12, color: "#6B7280", marginTop: 2 }}>Post needs & assign volunteers</div>
                   </button>
                   <button
                     type="button"
                     onClick={() => setRole("volunteer")}
-                    className={`p-4 rounded-xl border-2 transition-all duration-200 text-center
-                      ${role === "volunteer"
-                        ? "border-primary bg-primary-50 text-primary"
-                        : "border-gray-200 text-gray-500 hover:border-gray-300"
-                      }`}
+                    style={{
+                      padding: 16, borderRadius: 16, textAlign: "center", cursor: "pointer",
+                      border: `2px solid ${role === "volunteer" ? "#FF6B35" : "#E5E7EB"}`,
+                      background: role === "volunteer" ? "#FFF0EA" : "white",
+                      transition: "all 0.2s ease", position: "relative",
+                    }}
                   >
-                    <div className="text-2xl mb-1">🙋</div>
-                    <div className="text-sm font-semibold">Volunteer</div>
+                    {role === "volunteer" && (
+                      <div style={{ position: "absolute", top: 8, right: 8, width: 18, height: 18, borderRadius: 99, background: "#FF6B35", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                        <svg width="10" height="10" viewBox="0 0 10 10"><path d="M2 5L4 7L8 3" stroke="white" strokeWidth="1.5" fill="none" strokeLinecap="round"/></svg>
+                      </div>
+                    )}
+                    <div style={{ fontSize: 28, marginBottom: 4 }}>🙋</div>
+                    <div style={{ fontFamily: "'Nunito', sans-serif", fontWeight: 700, fontSize: 15, color: "#1A1A2E" }}>Volunteer</div>
+                    <div style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 400, fontSize: 12, color: "#6B7280", marginTop: 2 }}>Find & accept tasks near you</div>
                   </button>
                 </div>
               </div>
@@ -208,39 +326,42 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="btn-primary w-full"
+              className="btn-primary"
               id="login-submit-btn"
+              style={{ width: "100%", height: 52, borderRadius: 12 }}
             >
               {loading ? (
                 <Loader2 className="w-5 h-5 animate-spin" />
               ) : (
                 <>
                   {isSignUp ? "Create Account" : "Sign In"}
-                  <ArrowRight className="w-5 h-5" />
+                  <ArrowRight size={18} />
                 </>
               )}
             </button>
           </form>
 
-          <div className="mt-6 text-center">
+          <div style={{ marginTop: 24, textAlign: "center" }}>
             <button
-              onClick={() => {
-                setIsSignUp(!isSignUp);
-                setError("");
+              onClick={() => { setIsSignUp(!isSignUp); setError(""); }}
+              style={{
+                background: "none", border: "none", cursor: "pointer",
+                fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 500, fontSize: 14,
+                color: "#6B4EFF",
               }}
-              className="text-sm text-primary font-medium hover:underline"
             >
-              {isSignUp
-                ? "Already have an account? Sign in"
-                : "Don't have an account? Create one"}
+              {isSignUp ? "Already have an account? Sign in" : "Don't have an account? Sign Up"}
             </button>
           </div>
 
           {!isSignUp && (
-            <div className="mt-4 text-center">
+            <div style={{ marginTop: 16, textAlign: "center" }}>
               <Link
                 to="/signup/volunteer"
-                className="text-sm text-accent font-medium hover:underline"
+                style={{
+                  fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600, fontSize: 14,
+                  color: "#FF6B35", textDecoration: "none",
+                }}
               >
                 Register as a Volunteer →
               </Link>

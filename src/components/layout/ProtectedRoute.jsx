@@ -11,7 +11,7 @@ export default function ProtectedRoute({ children, requiredRole }) {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-surface-50">
+      <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "#E8F4FD" }}>
         <LoadingSpinner size="lg" text="Loading..." />
       </div>
     );

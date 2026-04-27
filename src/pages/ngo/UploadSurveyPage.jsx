@@ -80,12 +80,19 @@ export default function UploadSurveyPage() {
   if (saved) {
     return (
       <NGOSidebar>
-        <div className="max-w-2xl mx-auto text-center py-20 animate-slide-up">
-          <div className="w-20 h-20 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-6">
-            <CheckCircle className="w-10 h-10 text-green-600" />
+        <div style={{ maxWidth: 640, margin: "0 auto", textAlign: "center", padding: "80px 0", animation: "fadeUp 0.5s ease-out" }}>
+          <div style={{
+            width: 80, height: 80, borderRadius: "50%", background: "#E6F9EE",
+            display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 24px",
+          }}>
+            <CheckCircle size={36} color="#2DCB73" />
           </div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">Survey Data Saved!</h2>
-          <p className="text-gray-500">Redirecting to dashboard...</p>
+          <h2 style={{ fontFamily: "'Nunito', sans-serif", fontWeight: 900, fontSize: 24, color: "#1A1A2E", marginBottom: 8 }}>
+            Survey Data Saved! 🎉
+          </h2>
+          <p style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 15, color: "#6B7280" }}>
+            Redirecting to dashboard...
+          </p>
         </div>
       </NGOSidebar>
     );
@@ -93,94 +100,148 @@ export default function UploadSurveyPage() {
 
   return (
     <NGOSidebar>
-      <div className="max-w-3xl mx-auto" id="upload-survey-page">
-        <button onClick={() => navigate("/ngo/dashboard")} className="btn-ghost mb-4 text-sm">
-          <ArrowLeft className="w-4 h-4" /> Back to Dashboard
+      <div style={{ maxWidth: 740, margin: "0 auto" }} id="upload-survey-page">
+        <button
+          onClick={() => navigate("/ngo/dashboard")}
+          style={{
+            display: "flex", alignItems: "center", gap: 6, background: "none",
+            border: "none", cursor: "pointer", marginBottom: 16,
+            fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 500, fontSize: 14, color: "#6B7280",
+          }}
+        >
+          <ArrowLeft size={16} /> Back to Dashboard
         </button>
 
-        <h1 className="text-2xl font-bold text-gray-900 mb-1">Upload Paper Survey</h1>
-        <p className="text-gray-500 mb-8">Upload a scanned survey and our AI will extract structured data</p>
+        <h1 style={{ fontFamily: "'Nunito', sans-serif", fontWeight: 900, fontSize: 24, color: "#1A1A2E", marginBottom: 4 }}>
+          Upload Paper Survey 📄
+        </h1>
+        <p style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 400, fontSize: 15, color: "#6B7280", marginBottom: 32 }}>
+          Upload a scanned survey and our AI will extract structured data
+        </p>
 
         {/* Upload area */}
-        <div className="bg-white rounded-2xl shadow-card p-6 lg:p-8 mb-6">
-          <div className={`border-2 border-dashed rounded-2xl p-8 text-center transition-all duration-200 ${file ? "border-primary bg-primary-50/30" : "border-gray-300 hover:border-primary/50"}`}>
+        <div style={{
+          background: "white", borderRadius: 20, padding: 32,
+          boxShadow: "0 4px 24px rgba(107,78,255,0.10)", marginBottom: 24,
+        }}>
+          <div
+            style={{
+              border: `2px dashed ${file ? "#6B4EFF" : "#D1D5DB"}`,
+              borderRadius: 20, padding: 40, textAlign: "center",
+              transition: "all 0.2s ease",
+              background: file ? "rgba(107,78,255,0.03)" : "transparent",
+            }}
+          >
             {preview ? (
-              <div className="mb-4">
-                <img src={preview} alt="Survey preview" className="max-h-64 mx-auto rounded-xl shadow-md" />
+              <div style={{ marginBottom: 16 }}>
+                <img src={preview} alt="Survey preview"
+                  style={{ maxHeight: 260, margin: "0 auto", borderRadius: 16, boxShadow: "0 4px 24px rgba(107,78,255,0.15)" }} />
               </div>
             ) : (
-              <div className="w-16 h-16 rounded-2xl bg-gray-100 flex items-center justify-center mx-auto mb-4">
-                <FileImage className="w-8 h-8 text-gray-400" />
+              <div style={{
+                width: 64, height: 64, borderRadius: 16, background: "#EDE9FF",
+                display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 16px",
+              }}>
+                <FileImage size={28} color="#6B4EFF" />
               </div>
             )}
-            <p className="font-medium text-gray-700 mb-1">
+            <p style={{ fontFamily: "'Nunito', sans-serif", fontWeight: 700, fontSize: 16, color: "#1A1A2E", marginBottom: 4 }}>
               {file ? file.name : "Drop a survey file here or click to upload"}
             </p>
-            {file && <p className="text-sm text-gray-500">{(file.size / 1024).toFixed(1)} KB</p>}
-            {!file && <p className="text-sm text-gray-400">PDF, JPG, PNG supported</p>}
+            {file && (
+              <p style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 13, color: "#6B7280" }}>
+                {(file.size / 1024).toFixed(1)} KB
+              </p>
+            )}
+            {!file && (
+              <p style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 13, color: "#9CA3AF" }}>
+                PDF, JPG, PNG supported
+              </p>
+            )}
 
-            <label htmlFor="survey-file-input" className="btn-outline text-sm mt-4 cursor-pointer inline-flex">
-              <Upload className="w-4 h-4" /> {file ? "Change File" : "Choose File"}
+            <label htmlFor="survey-file-input" className="btn-outline"
+              style={{ marginTop: 16, display: "inline-flex", cursor: "pointer", fontSize: 14, padding: "8px 20px" }}>
+              <Upload size={16} /> {file ? "Change File" : "Choose File"}
             </label>
             <input type="file" accept="image/*,.pdf" onChange={handleFileChange}
-              className="hidden" id="survey-file-input" />
+              style={{ display: "none" }} id="survey-file-input" />
           </div>
 
           {file && !extractedData && (
-            <button onClick={handleExtract} disabled={extracting} className="btn-accent w-full mt-6" id="extract-survey-btn">
+            <button onClick={handleExtract} disabled={extracting} className="btn-accent"
+              id="extract-survey-btn" style={{ width: "100%", marginTop: 24, height: 52, borderRadius: 12 }}>
               {extracting ? (
                 <><Loader2 className="w-5 h-5 animate-spin" /> Analyzing with Gemini AI...</>
               ) : (
-                <><Sparkles className="w-5 h-5" /> Extract Data with AI</>
+                <><Sparkles size={18} /> Extract Data with AI</>
               )}
             </button>
           )}
         </div>
 
         {extracting && (
-          <div className="bg-white rounded-2xl shadow-card p-8 text-center">
+          <div style={{ background: "white", borderRadius: 20, padding: 40, boxShadow: "0 4px 24px rgba(107,78,255,0.10)", textAlign: "center" }}>
             <LoadingSpinner size="lg" text="Analyzing survey with Gemini Vision AI..." />
           </div>
         )}
 
         {extractedData && !extracting && (
-          <div className="bg-white rounded-2xl shadow-card p-6 lg:p-8 animate-slide-up">
-            <div className="flex items-center justify-between mb-6">
-              <div className="flex items-center gap-2">
-                <Sparkles className="w-5 h-5 text-accent" />
-                <h3 className="font-semibold text-lg text-gray-900">Extracted Results</h3>
+          <div style={{
+            background: "white", borderRadius: 20, padding: 32,
+            boxShadow: "0 4px 24px rgba(107,78,255,0.10)",
+            animation: "fadeUp 0.4s ease-out",
+          }}>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 24 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <Sparkles size={18} color="#FF6B35" />
+                <h3 style={{ fontFamily: "'Nunito', sans-serif", fontWeight: 800, fontSize: 18, color: "#1A1A2E" }}>
+                  Extracted Results
+                </h3>
               </div>
-              <button onClick={() => setEditing(!editing)} className="btn-ghost text-sm">
-                <Edit3 className="w-4 h-4" /> {editing ? "Done" : "Edit"}
+              <button
+                onClick={() => setEditing(!editing)}
+                style={{
+                  display: "flex", alignItems: "center", gap: 4,
+                  background: "none", border: "none", cursor: "pointer",
+                  fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 500, fontSize: 14, color: "#6B4EFF",
+                }}
+              >
+                <Edit3 size={14} /> {editing ? "Done" : "Edit"}
               </button>
             </div>
 
-            <div className="mb-6">
+            <div style={{ marginBottom: 24 }}>
               <label className="input-label">Extracted Text</label>
-              <div className="bg-gray-50 rounded-xl p-4 text-sm text-gray-700 whitespace-pre-wrap max-h-48 overflow-y-auto">
+              <div style={{
+                background: "#F9FAFB", borderRadius: 14, padding: 16,
+                fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 14, color: "#1A1A2E",
+                whiteSpace: "pre-wrap", maxHeight: 200, overflowY: "auto", lineHeight: 1.6,
+              }}>
                 {extractedData.rawText}
               </div>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 24 }}>
               <div>
                 <label className="input-label">Category</label>
                 {editing ? (
                   <select className="input-field" value={extractedData.category}
                     onChange={(e) => updateField("category", e.target.value)}>
-                    <option value="food">🍲 Food</option>
+                    <option value="food">🍱 Food</option>
                     <option value="medical">🏥 Medical</option>
                     <option value="shelter">🏠 Shelter</option>
                     <option value="education">📚 Education</option>
                   </select>
                 ) : (
-                  <p className="text-gray-900 font-medium capitalize">{extractedData.category}</p>
+                  <p style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 500, fontSize: 15, color: "#1A1A2E", textTransform: "capitalize" }}>
+                    {extractedData.category}
+                  </p>
                 )}
               </div>
               <div>
                 <label className="input-label">Urgency Score</label>
                 {editing ? (
-                  <input type="number" min="1" max="10" className="input-field !w-20"
+                  <input type="number" min="1" max="10" className="input-field" style={{ width: 80 }}
                     value={extractedData.urgencyScore}
                     onChange={(e) => updateField("urgencyScore", Math.max(1, Math.min(10, parseInt(e.target.value) || 1)))} />
                 ) : (
@@ -193,22 +254,27 @@ export default function UploadSurveyPage() {
                   <input type="text" className="input-field" value={extractedData.locationName}
                     onChange={(e) => updateField("locationName", e.target.value)} />
                 ) : (
-                  <p className="text-gray-900 font-medium">{extractedData.locationName}</p>
+                  <p style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 500, fontSize: 15, color: "#1A1A2E" }}>
+                    {extractedData.locationName}
+                  </p>
                 )}
               </div>
               <div>
                 <label className="input-label">Description</label>
                 {editing ? (
-                  <textarea className="input-field min-h-[80px]" value={extractedData.description}
+                  <textarea className="input-field" style={{ minHeight: 80, height: "auto" }} value={extractedData.description}
                     onChange={(e) => updateField("description", e.target.value)} />
                 ) : (
-                  <p className="text-gray-700 text-sm">{extractedData.description}</p>
+                  <p style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 14, color: "#6B7280" }}>
+                    {extractedData.description}
+                  </p>
                 )}
               </div>
             </div>
 
-            <button onClick={handleSave} disabled={saving} className="btn-accent w-full" id="save-survey-btn">
-              {saving ? <Loader2 className="w-5 h-5 animate-spin" /> : <><Save className="w-5 h-5" /> Confirm & Save to Dashboard</>}
+            <button onClick={handleSave} disabled={saving} className="btn-accent"
+              id="save-survey-btn" style={{ width: "100%", height: 52, borderRadius: 12 }}>
+              {saving ? <Loader2 className="w-5 h-5 animate-spin" /> : <><Save size={18} /> Confirm & Save to Dashboard</>}
             </button>
           </div>
         )}

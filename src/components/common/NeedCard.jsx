@@ -1,31 +1,52 @@
 import UrgencyBadge from "./UrgencyBadge";
-import { MapPin, Tag, Clock } from "lucide-react";
+import { MapPin, Clock } from "lucide-react";
 
 const categoryIcons = {
-  food: "🍲",
+  food: "🍱",
   medical: "🏥",
   shelter: "🏠",
   education: "📚",
 };
 
 const statusStyles = {
-  open: "bg-blue-100 text-blue-700",
-  assigned: "bg-purple-100 text-purple-700",
-  resolved: "bg-green-100 text-green-700",
+  open: { bg: "#EDE9FF", color: "#6B4EFF" },
+  assigned: { bg: "#FFE8F2", color: "#FF4D8D" },
+  resolved: { bg: "#E6F9EE", color: "#2DCB73" },
 };
 
 export default function NeedCard({ need, onClick, actions }) {
+  const s = statusStyles[need.status] || { bg: "#F3F4F6", color: "#6B7280" };
+
   return (
     <div
-      className="need-card cursor-pointer group"
+      style={{
+        background: "white",
+        borderRadius: 20,
+        padding: 20,
+        boxShadow: "0 4px 24px rgba(107,78,255,0.10)",
+        border: "1.5px solid transparent",
+        cursor: "pointer",
+        transition: "all 0.2s ease",
+      }}
       onClick={() => onClick?.(need)}
       id={`need-card-${need.id}`}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.transform = "translateY(-4px)";
+        e.currentTarget.style.boxShadow = "0 8px 32px rgba(107,78,255,0.18)";
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.transform = "translateY(0)";
+        e.currentTarget.style.boxShadow = "0 4px 24px rgba(107,78,255,0.10)";
+      }}
     >
       {/* Header */}
-      <div className="flex items-start justify-between mb-3">
-        <div className="flex items-center gap-2">
-          <span className="text-xl">{categoryIcons[need.category] || "📋"}</span>
-          <span className="text-sm font-semibold text-gray-700 capitalize">
+      <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: 12 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+          <span style={{ fontSize: 20 }}>{categoryIcons[need.category] || "📋"}</span>
+          <span style={{
+            fontFamily: "'Nunito', sans-serif", fontWeight: 700, fontSize: 16,
+            color: "#1A1A2E", textTransform: "capitalize",
+          }}>
             {need.category}
           </span>
         </div>
@@ -33,22 +54,38 @@ export default function NeedCard({ need, onClick, actions }) {
       </div>
 
       {/* Description */}
-      <p className="text-gray-800 text-sm leading-relaxed mb-3 line-clamp-3">
+      <p style={{
+        fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 400, fontSize: 14,
+        color: "#1A1A2E", lineHeight: 1.6, marginBottom: 12,
+        display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical", overflow: "hidden",
+      }}>
         {need.description}
       </p>
 
       {/* Meta */}
-      <div className="flex flex-wrap items-center gap-3 text-xs text-gray-500 mb-3">
-        <span className="flex items-center gap-1">
-          <MapPin className="w-3.5 h-3.5" />
-          {need.locationName || "Unknown location"}
+      <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: 8, marginBottom: actions ? 12 : 0 }}>
+        <span style={{
+          display: "inline-flex", alignItems: "center", gap: 4,
+          padding: "4px 12px", borderRadius: 999,
+          background: "#EDE9FF", color: "#6B4EFF",
+          fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 500, fontSize: 13,
+        }}>
+          <MapPin size={12} /> {need.locationName || "Unknown"}
         </span>
-        <span className={`badge ${statusStyles[need.status] || "bg-gray-100 text-gray-600"}`}>
+        <span style={{
+          padding: "3px 10px", borderRadius: 999,
+          background: s.bg, color: s.color,
+          fontFamily: "'Nunito', sans-serif", fontWeight: 700, fontSize: 11,
+          textTransform: "uppercase", letterSpacing: "0.05em",
+        }}>
           {need.status}
         </span>
         {need.createdAt && (
-          <span className="flex items-center gap-1">
-            <Clock className="w-3.5 h-3.5" />
+          <span style={{
+            display: "inline-flex", alignItems: "center", gap: 4,
+            fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 12, color: "#9CA3AF",
+          }}>
+            <Clock size={12} />
             {need.createdAt.toDate
               ? need.createdAt.toDate().toLocaleDateString()
               : "Recent"}
@@ -57,7 +94,7 @@ export default function NeedCard({ need, onClick, actions }) {
       </div>
 
       {/* Actions */}
-      {actions && <div className="flex gap-2 pt-2 border-t border-gray-50">{actions}</div>}
+      {actions && <div style={{ display: "flex", gap: 8, paddingTop: 12, borderTop: "1px solid #F3F4F6" }}>{actions}</div>}
     </div>
   );
 }

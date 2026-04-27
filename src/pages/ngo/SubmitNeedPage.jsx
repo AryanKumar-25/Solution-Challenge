@@ -10,7 +10,7 @@ import {
 } from "lucide-react";
 
 const CATEGORIES = [
-  { value: "food", label: "🍲 Food" },
+  { value: "food", label: "🍱 Food" },
   { value: "medical", label: "🏥 Medical" },
   { value: "shelter", label: "🏠 Shelter" },
   { value: "education", label: "📚 Education" },
@@ -69,16 +69,22 @@ export default function SubmitNeedPage() {
   if (success) {
     return (
       <NGOSidebar>
-        <div className="max-w-2xl mx-auto text-center py-20 animate-slide-up">
-          <div className="w-20 h-20 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-6">
-            <Send className="w-10 h-10 text-green-600" />
+        <div style={{ maxWidth: 640, margin: "0 auto", textAlign: "center", padding: "80px 0", animation: "fadeUp 0.5s ease-out" }}>
+          <div style={{
+            width: 80, height: 80, borderRadius: "50%", background: "#E6F9EE",
+            display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 24px",
+          }}>
+            <Send size={36} color="#2DCB73" />
           </div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">Need Submitted!</h2>
-          <p className="text-gray-500 mb-2">
-            The community need has been recorded with an urgency score of{" "}
-            <span className="font-bold text-accent">{urgencyScore}</span>.
+          <h2 style={{ fontFamily: "'Nunito', sans-serif", fontWeight: 900, fontSize: 24, color: "#1A1A2E", marginBottom: 8 }}>
+            Need Submitted! 🎉
+          </h2>
+          <p style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 15, color: "#6B7280", marginBottom: 4 }}>
+            Urgency score: <span style={{ fontFamily: "'Nunito', sans-serif", fontWeight: 800, color: "#FF6B35" }}>{urgencyScore}</span>
           </p>
-          <p className="text-gray-400 text-sm">Redirecting to dashboard...</p>
+          <p style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 13, color: "#9CA3AF" }}>
+            Redirecting to dashboard...
+          </p>
         </div>
       </NGOSidebar>
     );
@@ -86,41 +92,58 @@ export default function SubmitNeedPage() {
 
   return (
     <NGOSidebar>
-      <div className="max-w-2xl mx-auto" id="submit-need-page">
-        {/* Header */}
+      <div style={{ maxWidth: 640, margin: "0 auto" }} id="submit-need-page">
         <button
           onClick={() => navigate("/ngo/dashboard")}
-          className="btn-ghost mb-4 text-sm"
+          style={{
+            display: "flex", alignItems: "center", gap: 6, background: "none",
+            border: "none", cursor: "pointer", marginBottom: 16,
+            fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 500, fontSize: 14, color: "#6B7280",
+          }}
         >
-          <ArrowLeft className="w-4 h-4" />
-          Back to Dashboard
+          <ArrowLeft size={16} /> Back to Dashboard
         </button>
 
-        <h1 className="text-2xl font-bold text-gray-900 mb-1">Submit New Need Report</h1>
-        <p className="text-gray-500 mb-8">
+        <h1 style={{ fontFamily: "'Nunito', sans-serif", fontWeight: 900, fontSize: 24, color: "#1A1A2E", marginBottom: 4 }}>
+          Submit New Need Report ✏️
+        </h1>
+        <p style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 400, fontSize: 15, color: "#6B7280", marginBottom: 32 }}>
           Describe a community need and our AI will assess its urgency
         </p>
 
-        <form onSubmit={handleSubmit} className="bg-white rounded-2xl shadow-card p-6 lg:p-8 space-y-6">
+        <form
+          onSubmit={handleSubmit}
+          style={{
+            background: "white", borderRadius: 20, padding: 32,
+            boxShadow: "0 4px 24px rgba(107,78,255,0.10)",
+            display: "flex", flexDirection: "column", gap: 24,
+          }}
+        >
           {/* Description */}
           <div>
             <label className="input-label" htmlFor="need-description">
-              <FileText className="w-4 h-4 inline mr-1" />
+              <FileText size={14} style={{ display: "inline", marginRight: 4, verticalAlign: "middle" }} />
               Description
             </label>
             <textarea
               id="need-description"
-              className="input-field min-h-[120px] resize-y"
+              className="input-field"
+              style={{ minHeight: 120, height: "auto", resize: "vertical" }}
               placeholder="Describe the community need in detail..."
               value={formData.description}
               onChange={(e) => updateField("description", e.target.value)}
               required
             />
-            {/* Live urgency preview */}
             {urgencyScore !== null && (
-              <div className="mt-3 flex items-center gap-3 p-3 bg-gray-50 rounded-xl animate-fade-in">
-                <Sparkles className="w-5 h-5 text-accent" />
-                <span className="text-sm text-gray-600">AI Urgency Score:</span>
+              <div style={{
+                marginTop: 12, display: "flex", alignItems: "center", gap: 10,
+                padding: 12, background: "#EDE9FF", borderRadius: 12,
+                animation: "fadeUp 0.3s ease-out",
+              }}>
+                <Sparkles size={18} color="#6B4EFF" />
+                <span style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 14, color: "#6B7280" }}>
+                  AI Urgency Score:
+                </span>
                 <UrgencyBadge score={urgencyScore} />
               </div>
             )}
@@ -129,22 +152,25 @@ export default function SubmitNeedPage() {
           {/* Category */}
           <div>
             <label className="input-label">
-              <Tag className="w-4 h-4 inline mr-1" />
+              <Tag size={14} style={{ display: "inline", marginRight: 4, verticalAlign: "middle" }} />
               Category
             </label>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(120px, 1fr))", gap: 10 }}>
               {CATEGORIES.map((cat) => (
                 <button
                   key={cat.value}
                   type="button"
                   onClick={() => updateField("category", cat.value)}
-                  className={`p-3 rounded-xl border-2 transition-all duration-200 text-center
-                    ${formData.category === cat.value
-                      ? "border-primary bg-primary-50 text-primary"
-                      : "border-gray-200 text-gray-600 hover:border-gray-300"
-                    }`}
+                  style={{
+                    padding: 14, borderRadius: 16, textAlign: "center", cursor: "pointer",
+                    border: `2px solid ${formData.category === cat.value ? "#6B4EFF" : "#E5E7EB"}`,
+                    background: formData.category === cat.value ? "#EDE9FF" : "white",
+                    color: formData.category === cat.value ? "#6B4EFF" : "#6B7280",
+                    fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 500, fontSize: 14,
+                    transition: "all 0.2s ease",
+                  }}
                 >
-                  <span className="text-sm font-medium">{cat.label}</span>
+                  {cat.label}
                 </button>
               ))}
             </div>
@@ -153,7 +179,7 @@ export default function SubmitNeedPage() {
           {/* Location */}
           <div>
             <label className="input-label" htmlFor="need-location">
-              <MapPin className="w-4 h-4 inline mr-1" />
+              <MapPin size={14} style={{ display: "inline", marginRight: 4, verticalAlign: "middle" }} />
               Location Name
             </label>
             <input
@@ -168,47 +194,28 @@ export default function SubmitNeedPage() {
           </div>
 
           {/* Coordinates */}
-          <div className="grid grid-cols-2 gap-4">
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
             <div>
               <label className="input-label" htmlFor="need-lat">Latitude</label>
-              <input
-                id="need-lat"
-                type="number"
-                step="any"
-                className="input-field"
-                placeholder="19.076"
-                value={formData.lat}
-                onChange={(e) => updateField("lat", e.target.value)}
-              />
+              <input id="need-lat" type="number" step="any" className="input-field"
+                placeholder="19.076" value={formData.lat}
+                onChange={(e) => updateField("lat", e.target.value)} />
             </div>
             <div>
               <label className="input-label" htmlFor="need-lng">Longitude</label>
-              <input
-                id="need-lng"
-                type="number"
-                step="any"
-                className="input-field"
-                placeholder="72.877"
-                value={formData.lng}
-                onChange={(e) => updateField("lng", e.target.value)}
-              />
+              <input id="need-lng" type="number" step="any" className="input-field"
+                placeholder="72.877" value={formData.lng}
+                onChange={(e) => updateField("lng", e.target.value)} />
             </div>
           </div>
 
           {/* Submit */}
-          <button
-            type="submit"
-            disabled={loading}
-            className="btn-accent w-full"
-            id="submit-need-btn"
-          >
+          <button type="submit" disabled={loading} className="btn-accent"
+            id="submit-need-btn" style={{ width: "100%", height: 52, borderRadius: 12 }}>
             {loading ? (
               <Loader2 className="w-5 h-5 animate-spin" />
             ) : (
-              <>
-                <Send className="w-5 h-5" />
-                Submit Need Report
-              </>
+              <><Send size={18} /> Submit Need Report</>
             )}
           </button>
         </form>

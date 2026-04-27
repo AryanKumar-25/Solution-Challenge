@@ -39,25 +39,38 @@ export default function VolunteerTasksPage() {
 
   return (
     <VolunteerBottomNav>
-      <div id="volunteer-tasks-page">
-        <h1 className="text-2xl font-bold text-gray-900 mb-6">My Tasks</h1>
+      <div id="volunteer-tasks-page" style={{ animation: "fadeUp 0.35s ease-out" }}>
+        <h1 style={{
+          fontFamily: "'Nunito', sans-serif", fontWeight: 900, fontSize: 28,
+          color: "#1A1A2E", marginBottom: 24,
+        }}>
+          My Tasks 📋
+        </h1>
 
         {loading ? (
           <LoadingSpinner text="Loading tasks..." />
         ) : tasks.length === 0 ? (
-          <div className="text-center py-12">
-            <ClipboardList className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-            <h3 className="font-semibold text-gray-900 mb-1">No tasks yet</h3>
-            <p className="text-gray-500 text-sm">Accept matches from the Home tab</p>
+          <div style={{ textAlign: "center", padding: "48px 0" }}>
+            <ClipboardList size={48} color="#D1D5DB" style={{ margin: "0 auto 12px" }} />
+            <h3 style={{ fontFamily: "'Nunito', sans-serif", fontWeight: 700, fontSize: 18, color: "#1A1A2E", marginBottom: 4 }}>
+              No tasks yet
+            </h3>
+            <p style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 14, color: "#6B7280" }}>
+              Accept matches from the Home tab
+            </p>
           </div>
         ) : (
           <>
             {activeTasks.length > 0 && (
-              <div className="mb-6">
-                <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">
-                  Active ({activeTasks.length})
+              <div style={{ marginBottom: 24 }}>
+                <h2 style={{
+                  fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600,
+                  fontSize: 12, color: "#6B7280", textTransform: "uppercase",
+                  letterSpacing: "0.08em", marginBottom: 12,
+                }}>
+                  ACTIVE ({activeTasks.length})
                 </h2>
-                <div className="space-y-3">
+                <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
                   {activeTasks.map((task) => (
                     <TaskCard
                       key={task.id}
@@ -81,10 +94,14 @@ export default function VolunteerTasksPage() {
 
             {doneTasks.length > 0 && (
               <div>
-                <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">
-                  Completed ({doneTasks.length})
+                <h2 style={{
+                  fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600,
+                  fontSize: 12, color: "#6B7280", textTransform: "uppercase",
+                  letterSpacing: "0.08em", marginBottom: 12,
+                }}>
+                  COMPLETED ({doneTasks.length})
                 </h2>
-                <div className="space-y-3 opacity-60">
+                <div style={{ display: "flex", flexDirection: "column", gap: 12, opacity: 0.7 }}>
                   {doneTasks.map((task) => (
                     <TaskCard
                       key={task.id}

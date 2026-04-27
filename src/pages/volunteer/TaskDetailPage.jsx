@@ -83,56 +83,91 @@ export default function TaskDetailPage() {
   if (completed) {
     return (
       <VolunteerBottomNav>
-        <div className="text-center py-20 animate-slide-up">
-          <div className="w-20 h-20 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-6">
-            <CheckCircle className="w-10 h-10 text-green-600" />
+        <div style={{ textAlign: "center", padding: "80px 0", animation: "fadeUp 0.5s ease-out" }}>
+          <div style={{
+            width: 80, height: 80, borderRadius: "50%",
+            background: "#E6F9EE", display: "flex", alignItems: "center", justifyContent: "center",
+            margin: "0 auto 24px",
+          }}>
+            <CheckCircle size={40} color="#2DCB73" />
           </div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">Task Completed!</h2>
-          <p className="text-gray-500">Great work! Redirecting...</p>
+          <h2 style={{ fontFamily: "'Nunito', sans-serif", fontWeight: 900, fontSize: 24, color: "#1A1A2E", marginBottom: 8 }}>
+            Task Completed! 🎉
+          </h2>
+          <p style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 15, color: "#6B7280" }}>
+            Great work! Redirecting...
+          </p>
         </div>
       </VolunteerBottomNav>
     );
   }
 
-  const categoryIcons = { food: "🍲", medical: "🏥", shelter: "🏠", education: "📚" };
+  const categoryIcons = { food: "🍱", medical: "🏥", shelter: "🏠", education: "📚" };
 
   return (
     <VolunteerBottomNav>
-      <div id="task-detail-page">
-        <button onClick={() => navigate(-1)} className="btn-ghost text-sm mb-4">
-          <ArrowLeft className="w-4 h-4" /> Back
+      <div id="task-detail-page" style={{ animation: "fadeUp 0.35s ease-out" }}>
+        <button
+          onClick={() => navigate(-1)}
+          style={{
+            display: "flex", alignItems: "center", gap: 6, background: "none",
+            border: "none", cursor: "pointer", marginBottom: 16,
+            fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 500, fontSize: 14,
+            color: "#6B7280",
+          }}
+        >
+          <ArrowLeft size={16} /> Back
         </button>
 
         {/* Need details card */}
-        <div className="bg-white rounded-2xl shadow-card p-6 mb-4">
-          <div className="flex items-start justify-between mb-4">
-            <div className="flex items-center gap-2">
-              <span className="text-2xl">{categoryIcons[need?.category] || "📋"}</span>
-              <h2 className="text-xl font-bold text-gray-900 capitalize">{need?.category} Need</h2>
+        <div style={{
+          background: "white", borderRadius: 20, padding: 24,
+          boxShadow: "0 4px 24px rgba(107,78,255,0.10)", marginBottom: 16,
+        }}>
+          <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: 16 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+              <span style={{ fontSize: 28 }}>{categoryIcons[need?.category] || "📋"}</span>
+              <h2 style={{ fontFamily: "'Nunito', sans-serif", fontWeight: 800, fontSize: 22, color: "#1A1A2E", textTransform: "capitalize" }}>
+                {need?.category} Need
+              </h2>
             </div>
             <UrgencyBadge score={need?.urgencyScore || 5} />
           </div>
 
-          <p className="text-gray-700 leading-relaxed mb-4">{need?.description}</p>
+          <p style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 400, fontSize: 15, color: "#1A1A2E", lineHeight: 1.7, marginBottom: 16 }}>
+            {need?.description}
+          </p>
 
-          <div className="flex flex-wrap gap-4 text-sm text-gray-500">
-            <span className="flex items-center gap-1">
-              <MapPin className="w-4 h-4" />
-              {need?.locationName || "Unknown"}
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 8, alignItems: "center" }}>
+            <span style={{
+              display: "inline-flex", alignItems: "center", gap: 4,
+              padding: "4px 14px", borderRadius: 999, background: "#EDE9FF", color: "#6B4EFF",
+              fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 500, fontSize: 13,
+            }}>
+              <MapPin size={14} /> {need?.locationName || "Unknown"}
             </span>
             {task?.status && (
-              <span className={`badge ${
-                task.status === "accepted" ? "bg-blue-100 text-blue-700" :
-                task.status === "done" ? "bg-green-100 text-green-700" :
-                "bg-yellow-100 text-yellow-700"
-              }`}>{task.status}</span>
+              <span style={{
+                padding: "4px 12px", borderRadius: 999,
+                fontFamily: "'Nunito', sans-serif", fontWeight: 700, fontSize: 11,
+                textTransform: "uppercase",
+                ...(task.status === "accepted" ? { background: "#EDE9FF", color: "#6B4EFF" } :
+                   task.status === "done" ? { background: "#E6F9EE", color: "#2DCB73" } :
+                   { background: "#FFF0EA", color: "#FF6B35" }),
+              }}>
+                {task.status}
+              </span>
             )}
           </div>
         </div>
 
         {/* Map */}
         {need?.lat && need?.lng && (
-          <div className="bg-white rounded-2xl shadow-card overflow-hidden mb-4 h-48">
+          <div style={{
+            background: "white", borderRadius: 20,
+            boxShadow: "0 4px 24px rgba(107,78,255,0.10)",
+            overflow: "hidden", marginBottom: 16, height: 200,
+          }}>
             <MapContainer
               center={[need.lat, need.lng]}
               zoom={14}
@@ -151,13 +186,24 @@ export default function TaskDetailPage() {
         )}
 
         {/* NGO Contact */}
-        <div className="bg-white rounded-2xl shadow-card p-6 mb-4">
-          <h3 className="font-semibold text-gray-900 mb-3 flex items-center gap-2">
-            <User className="w-4 h-4" /> NGO Contact
+        <div style={{
+          background: "white", borderRadius: 20, padding: 24,
+          boxShadow: "0 4px 24px rgba(107,78,255,0.10)", marginBottom: 16,
+        }}>
+          <h3 style={{
+            fontFamily: "'Nunito', sans-serif", fontWeight: 700, fontSize: 16,
+            color: "#1A1A2E", marginBottom: 12,
+            display: "flex", alignItems: "center", gap: 8,
+          }}>
+            <User size={16} color="#6B4EFF" /> NGO Contact
           </h3>
-          <div className="space-y-2 text-sm text-gray-600">
-            <p className="flex items-center gap-2"><Mail className="w-4 h-4" /> ngo@volunteerbridge.org</p>
-            <p className="flex items-center gap-2"><Phone className="w-4 h-4" /> +91 98765 43210</p>
+          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+            <p style={{ display: "flex", alignItems: "center", gap: 8, fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 14, color: "#6B7280" }}>
+              <Mail size={16} color="#9CA3AF" /> ngo@volunteerbridge.org
+            </p>
+            <p style={{ display: "flex", alignItems: "center", gap: 8, fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 14, color: "#6B7280" }}>
+              <Phone size={16} color="#9CA3AF" /> +91 98765 43210
+            </p>
           </div>
         </div>
 
@@ -166,13 +212,14 @@ export default function TaskDetailPage() {
           <button
             onClick={handleComplete}
             disabled={completing}
-            className="btn-accent w-full"
+            className="btn-accent"
             id="complete-task-btn"
+            style={{ width: "100%", height: 52, borderRadius: 12 }}
           >
             {completing ? (
               <Loader2 className="w-5 h-5 animate-spin" />
             ) : (
-              <><CheckCircle className="w-5 h-5" /> Mark as Complete</>
+              <><CheckCircle size={18} /> Mark as Complete</>
             )}
           </button>
         )}

@@ -30,103 +30,168 @@ export default function NGOSidebar({ children }) {
     navigate("/login");
   };
 
+  const initials = user?.displayName?.[0]?.toUpperCase() || user?.email?.[0]?.toUpperCase() || "N";
+
   return (
-    <div className="flex min-h-screen bg-surface-50">
+    <div style={{ display: "flex", minHeight: "100vh", background: "#E8F4FD" }}>
       {/* Mobile overlay */}
       {sidebarOpen && (
         <div
-          className="fixed inset-0 bg-black/50 z-40 lg:hidden"
+          style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.4)", zIndex: 40 }}
+          className="lg:hidden"
           onClick={() => setSidebarOpen(false)}
         />
       )}
 
       {/* Sidebar */}
       <aside
-        className={`fixed lg:static inset-y-0 left-0 z-50 w-[260px] bg-gradient-hero flex flex-col 
-          transform transition-transform duration-300 ease-in-out shadow-sidebar
-          ${sidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}`}
+        style={{
+          position: "fixed",
+          top: 0, bottom: 0, left: 0,
+          width: 260,
+          background: "linear-gradient(135deg, #6B4EFF 0%, #8B72FF 100%)",
+          display: "flex",
+          flexDirection: "column",
+          zIndex: 50,
+          transform: sidebarOpen ? "translateX(0)" : "translateX(-100%)",
+          transition: "transform 0.3s ease-in-out",
+          boxShadow: "2px 0 12px rgba(107,78,255,0.2)",
+        }}
+        className="lg:!translate-x-0 lg:!static"
       >
         {/* Logo */}
-        <div className="flex items-center gap-3 px-6 py-6 border-b border-white/10">
-          <div className="w-10 h-10 rounded-xl bg-accent flex items-center justify-center">
-            <Heart className="w-5 h-5 text-white" fill="currentColor" />
+        <div style={{
+          display: "flex", alignItems: "center", gap: 12,
+          padding: "20px 24px",
+          borderBottom: "1px solid rgba(255,255,255,0.1)",
+        }}>
+          <div style={{
+            width: 40, height: 40, borderRadius: 12,
+            background: "#FF6B35",
+            display: "flex", alignItems: "center", justifyContent: "center",
+            boxShadow: "0 4px 12px rgba(255,107,53,0.3)",
+          }}>
+            <Heart size={20} color="white" fill="white" />
           </div>
-          <div>
-            <h1 className="text-white font-bold text-lg tracking-tight">VolunteerBridge</h1>
-            <p className="text-white/50 text-xs">NGO Dashboard</p>
+          <div style={{ flex: 1 }}>
+            <h1 style={{ fontFamily: "'Nunito', sans-serif", fontWeight: 800, fontSize: 18, color: "white", letterSpacing: "-0.02em" }}>
+              VolunteerBridge
+            </h1>
+            <p style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 11, color: "rgba(255,255,255,0.5)" }}>
+              NGO Dashboard
+            </p>
           </div>
           <button
-            className="lg:hidden ml-auto text-white/70 hover:text-white"
+            className="lg:hidden"
             onClick={() => setSidebarOpen(false)}
+            style={{ background: "none", border: "none", color: "rgba(255,255,255,0.7)", cursor: "pointer", padding: 4 }}
           >
-            <X className="w-5 h-5" />
+            <X size={20} />
           </button>
         </div>
 
         {/* Navigation */}
-        <nav className="flex-1 px-4 py-6 space-y-1">
-          {navItems.map((item) => (
-            <NavLink
-              key={item.to}
-              to={item.to}
-              onClick={() => setSidebarOpen(false)}
-              className={({ isActive }) =>
-                `nav-link ${isActive ? "active" : ""}`
-              }
-            >
-              <item.icon className="w-5 h-5" />
-              <span>{item.label}</span>
-            </NavLink>
-          ))}
+        <nav style={{ flex: 1, padding: "16px 12px" }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+            {navItems.map((item) => (
+              <NavLink
+                key={item.to}
+                to={item.to}
+                onClick={() => setSidebarOpen(false)}
+                style={({ isActive }) => ({
+                  display: "flex", alignItems: "center", gap: 12,
+                  padding: "12px 16px", borderRadius: 12,
+                  color: isActive ? "white" : "rgba(255,255,255,0.7)",
+                  background: isActive ? "rgba(255,255,255,0.15)" : "transparent",
+                  fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 500, fontSize: 14,
+                  textDecoration: "none",
+                  transition: "all 0.2s ease",
+                  boxShadow: isActive ? "0 2px 8px rgba(0,0,0,0.1)" : "none",
+                })}
+              >
+                <item.icon size={20} />
+                <span>{item.label}</span>
+              </NavLink>
+            ))}
+          </div>
         </nav>
 
         {/* User section */}
-        <div className="px-4 py-4 border-t border-white/10">
-          <div className="flex items-center gap-3 px-3 py-2 mb-3">
-            <div className="w-9 h-9 rounded-full bg-accent/30 flex items-center justify-center">
-              <span className="text-white font-semibold text-sm">
-                {user?.email?.[0]?.toUpperCase() || "N"}
-              </span>
+        <div style={{ padding: "12px 16px", borderTop: "1px solid rgba(255,255,255,0.1)" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "8px 12px", marginBottom: 8 }}>
+            <div style={{
+              width: 36, height: 36, borderRadius: "50%",
+              background: "#FF6B35",
+              display: "flex", alignItems: "center", justifyContent: "center",
+              fontFamily: "'Nunito', sans-serif", fontWeight: 800, fontSize: 14, color: "white",
+            }}>
+              {initials}
             </div>
-            <div className="flex-1 min-w-0">
-              <p className="text-white text-sm font-medium truncate">
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <p style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 13, fontWeight: 500, color: "white", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                 {user?.displayName || user?.email || "NGO Coordinator"}
               </p>
-              <p className="text-white/40 text-xs truncate">{user?.email}</p>
+              <p style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 11, color: "rgba(255,255,255,0.4)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                {user?.email}
+              </p>
             </div>
           </div>
           <button
             onClick={handleLogout}
-            className="nav-link w-full text-red-300 hover:bg-red-500/20 hover:text-red-200"
+            style={{
+              display: "flex", alignItems: "center", gap: 12,
+              padding: "12px 16px", borderRadius: 12, width: "100%",
+              background: "none", border: "none",
+              color: "#FCA5A5", cursor: "pointer",
+              fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 500, fontSize: 14,
+              transition: "all 0.2s ease",
+            }}
+            onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(239,68,68,0.15)"; }}
+            onMouseLeave={(e) => { e.currentTarget.style.background = "none"; }}
           >
-            <LogOut className="w-5 h-5" />
+            <LogOut size={18} />
             <span>Sign Out</span>
           </button>
         </div>
       </aside>
 
       {/* Main content */}
-      <div className="flex-1 flex flex-col min-h-screen">
+      <div style={{ flex: 1, display: "flex", flexDirection: "column", minHeight: "100vh" }}>
         {/* Mobile header */}
-        <header className="lg:hidden sticky top-0 z-30 bg-white/80 backdrop-blur-md border-b border-gray-100 px-4 py-3">
-          <div className="flex items-center gap-3">
+        <header
+          className="lg:hidden"
+          style={{
+            position: "sticky", top: 0, zIndex: 30,
+            background: "white",
+            boxShadow: "0 2px 12px rgba(107,78,255,0.08)",
+            padding: "10px 16px",
+          }}
+        >
+          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
             <button
               onClick={() => setSidebarOpen(true)}
-              className="p-2 rounded-xl hover:bg-gray-100 transition-colors"
+              style={{ background: "none", border: "none", cursor: "pointer", padding: 6, borderRadius: 10 }}
             >
-              <Menu className="w-5 h-5 text-gray-700" />
+              <Menu size={20} color="#1A1A2E" />
             </button>
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
-                <Heart className="w-4 h-4 text-white" fill="currentColor" />
+            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+              <div style={{ width: 32, height: 32, borderRadius: 10, background: "#6B4EFF", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <Heart size={16} color="white" fill="white" />
               </div>
-              <span className="font-bold text-primary">VolunteerBridge</span>
+              <span style={{ fontFamily: "'Nunito', sans-serif", fontWeight: 800, fontSize: 16, color: "#1A1A2E" }}>
+                VolunteerBridge
+              </span>
             </div>
           </div>
         </header>
 
         {/* Page content */}
-        <main className="flex-1 p-4 lg:p-8 animate-fade-in">
+        <main style={{
+          flex: 1, padding: "16px",
+          animation: "fadeUp 0.35s ease-out",
+        }}
+          className="lg:p-8"
+        >
           {children}
         </main>
       </div>

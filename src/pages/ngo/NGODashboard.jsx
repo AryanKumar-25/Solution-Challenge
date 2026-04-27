@@ -64,92 +64,71 @@ export default function NGODashboard() {
   const criticalNeeds = needs.filter((n) => n.urgencyScore >= 8).length;
   const resolvedNeeds = needs.filter((n) => n.status === "resolved").length;
 
+  const statCards = [
+    { icon: TrendingUp, label: "Total", value: totalNeeds, gradient: "linear-gradient(135deg, #6B4EFF, #8B72FF)" },
+    { icon: AlertTriangle, label: "Critical", value: criticalNeeds, gradient: "linear-gradient(135deg, #FF4D8D, #FF7AAD)" },
+    { icon: Users, label: "Open", value: openNeeds, gradient: "linear-gradient(135deg, #FF6B35, #FF8F5A)" },
+    { icon: CheckCircle2, label: "Resolved", value: resolvedNeeds, gradient: "linear-gradient(135deg, #2DCB73, #5AD89A)" },
+  ];
+
   return (
     <NGOSidebar>
-      <div className="max-w-7xl mx-auto" id="ngo-dashboard">
+      <div style={{ maxWidth: 1200, margin: "0 auto" }} id="ngo-dashboard">
         {/* Page header */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-8">
+        <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", marginBottom: 32, gap: 16 }}>
           <div>
-            <h1 className="text-2xl lg:text-3xl font-bold text-gray-900">
-              Community Needs Dashboard
+            <h1 style={{ fontFamily: "'Nunito', sans-serif", fontWeight: 900, fontSize: "clamp(22px, 3vw, 30px)", color: "#1A1A2E" }}>
+              Community Needs Dashboard 📊
             </h1>
-            <p className="text-gray-500 mt-1">
+            <p style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 400, fontSize: 15, color: "#6B7280", marginTop: 4 }}>
               Track and manage community needs in real-time
             </p>
           </div>
-          <div className="flex gap-3 mt-4 sm:mt-0">
-            <button
-              onClick={() => navigate("/ngo/submit-need")}
-              className="btn-accent text-sm"
-              id="btn-submit-need"
-            >
-              <PlusCircle className="w-4 h-4" />
-              Submit Need
+          <div style={{ display: "flex", gap: 12 }}>
+            <button onClick={() => navigate("/ngo/submit-need")} className="btn-accent" style={{ fontSize: 14, padding: "10px 20px" }} id="btn-submit-need">
+              <PlusCircle size={16} /> Submit Need
             </button>
-            <button
-              onClick={() => navigate("/ngo/upload-survey")}
-              className="btn-outline text-sm"
-              id="btn-upload-survey"
-            >
-              <Upload className="w-4 h-4" />
-              Upload Survey
+            <button onClick={() => navigate("/ngo/upload-survey")} className="btn-outline" style={{ fontSize: 14, padding: "10px 20px" }} id="btn-upload-survey">
+              <Upload size={16} /> Upload Survey
             </button>
           </div>
         </div>
 
         {/* Stats cards */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-          <div className="stat-card">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center">
-                <TrendingUp className="w-5 h-5 text-white" />
-              </div>
-              <div>
-                <p className="text-white/60 text-xs font-medium uppercase tracking-wider">Total</p>
-                <p className="text-2xl font-bold text-white">{totalNeeds}</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="stat-card" style={{ background: 'linear-gradient(135deg, rgba(239, 68, 68, 0.9), rgba(220, 38, 38, 0.9))' }}>
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center">
-                <AlertTriangle className="w-5 h-5 text-white" />
-              </div>
-              <div>
-                <p className="text-white/60 text-xs font-medium uppercase tracking-wider">Critical</p>
-                <p className="text-2xl font-bold text-white">{criticalNeeds}</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="stat-card" style={{ background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.9), rgba(37, 99, 235, 0.9))' }}>
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center">
-                <Users className="w-5 h-5 text-white" />
-              </div>
-              <div>
-                <p className="text-white/60 text-xs font-medium uppercase tracking-wider">Open</p>
-                <p className="text-2xl font-bold text-white">{openNeeds}</p>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 16, marginBottom: 32 }}>
+          {statCards.map((s) => (
+            <div
+              key={s.label}
+              style={{
+                background: s.gradient,
+                borderRadius: 20, padding: 24,
+                color: "white", position: "relative", overflow: "hidden",
+              }}
+            >
+              <div style={{ position: "absolute", top: -20, right: -20, width: 80, height: 80, borderRadius: "50%", background: "rgba(255,255,255,0.08)" }} />
+              <div style={{ display: "flex", alignItems: "center", gap: 12, position: "relative" }}>
+                <div style={{
+                  width: 44, height: 44, borderRadius: 12,
+                  background: "rgba(255,255,255,0.2)",
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                }}>
+                  <s.icon size={22} />
+                </div>
+                <div>
+                  <p style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 11, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.08em", opacity: 0.7 }}>
+                    {s.label}
+                  </p>
+                  <p style={{ fontFamily: "'Nunito', sans-serif", fontWeight: 900, fontSize: 28 }}>
+                    {s.value}
+                  </p>
+                </div>
               </div>
             </div>
-          </div>
-
-          <div className="stat-card" style={{ background: 'linear-gradient(135deg, rgba(34, 197, 94, 0.9), rgba(22, 163, 74, 0.9))' }}>
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center">
-                <CheckCircle2 className="w-5 h-5 text-white" />
-              </div>
-              <div>
-                <p className="text-white/60 text-xs font-medium uppercase tracking-wider">Resolved</p>
-                <p className="text-2xl font-bold text-white">{resolvedNeeds}</p>
-              </div>
-            </div>
-          </div>
+          ))}
         </div>
 
         {/* Filters */}
-        <div className="bg-white rounded-2xl shadow-card p-4 mb-6">
+        <div style={{ background: "white", borderRadius: 20, padding: 16, marginBottom: 24, boxShadow: "0 4px 24px rgba(107,78,255,0.10)" }}>
           <CategoryFilter
             selectedCategory={categoryFilter}
             selectedStatus={statusFilter}
@@ -162,27 +141,31 @@ export default function NGODashboard() {
         {loading ? (
           <LoadingSpinner text="Loading community needs..." />
         ) : needs.length === 0 ? (
-          <div className="text-center py-16">
-            <div className="w-20 h-20 rounded-full bg-gray-100 flex items-center justify-center mx-auto mb-4">
-              <PlusCircle className="w-10 h-10 text-gray-300" />
+          <div style={{ textAlign: "center", padding: "64px 0" }}>
+            <div style={{
+              width: 80, height: 80, borderRadius: "50%",
+              background: "#EDE9FF",
+              display: "flex", alignItems: "center", justifyContent: "center",
+              margin: "0 auto 16px",
+            }}>
+              <PlusCircle size={36} color="#6B4EFF" />
             </div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-1">No needs reported yet</h3>
-            <p className="text-gray-500 mb-6">Submit your first community need report</p>
-            <button
-              onClick={() => navigate("/ngo/submit-need")}
-              className="btn-accent"
-            >
-              <PlusCircle className="w-4 h-4" />
-              Submit Need
+            <h3 style={{ fontFamily: "'Nunito', sans-serif", fontWeight: 800, fontSize: 20, color: "#1A1A2E", marginBottom: 4 }}>
+              No needs reported yet
+            </h3>
+            <p style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 15, color: "#6B7280", marginBottom: 24 }}>
+              Submit your first community need report
+            </p>
+            <button onClick={() => navigate("/ngo/submit-need")} className="btn-accent">
+              <PlusCircle size={16} /> Submit Need
             </button>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))", gap: 16 }}>
             {needs.map((need, index) => (
               <div
                 key={need.id}
-                className="animate-slide-up"
-                style={{ animationDelay: `${index * 50}ms` }}
+                style={{ animation: `fadeUp 0.4s ease-out ${index * 0.05}s both` }}
               >
                 <NeedCard need={need} onClick={() => {}} />
               </div>

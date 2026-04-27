@@ -15,9 +15,9 @@ import { ArrowLeft, UserPlus, Loader2 } from "lucide-react";
 const defaultCenter = [20.5937, 78.9629];
 
 const getMarkerColor = (score) => {
-  if (score >= 8) return "#EF4444";
-  if (score >= 4) return "#F59E0B";
-  return "#22C55E";
+  if (score >= 8) return "#FF4D8D";
+  if (score >= 4) return "#FFD046";
+  return "#2DCB73";
 };
 
 export default function MapViewPage() {
@@ -72,22 +72,41 @@ export default function MapViewPage() {
 
   return (
     <NGOSidebar>
-      <div className="max-w-7xl mx-auto h-[calc(100vh-120px)]" id="map-view-page">
-        <div className="flex items-center justify-between mb-4">
+      <div style={{ maxWidth: 1200, margin: "0 auto", height: "calc(100vh - 120px)" }} id="map-view-page">
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16 }}>
           <div>
-            <button onClick={() => navigate("/ngo/dashboard")} className="btn-ghost text-sm mb-2">
-              <ArrowLeft className="w-4 h-4" /> Back
+            <button
+              onClick={() => navigate("/ngo/dashboard")}
+              style={{
+                display: "flex", alignItems: "center", gap: 6, background: "none",
+                border: "none", cursor: "pointer", marginBottom: 8,
+                fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 500, fontSize: 14, color: "#6B7280",
+              }}
+            >
+              <ArrowLeft size={16} /> Back
             </button>
-            <h1 className="text-2xl font-bold text-gray-900">Map View</h1>
+            <h1 style={{ fontFamily: "'Nunito', sans-serif", fontWeight: 900, fontSize: 24, color: "#1A1A2E" }}>
+              Map View 🗺️
+            </h1>
           </div>
-          <div className="flex gap-3 text-xs">
-            <span className="flex items-center gap-1"><span className="w-3 h-3 rounded-full bg-red-500" />Critical</span>
-            <span className="flex items-center gap-1"><span className="w-3 h-3 rounded-full bg-yellow-500" />Moderate</span>
-            <span className="flex items-center gap-1"><span className="w-3 h-3 rounded-full bg-green-500" />Low</span>
+          <div style={{ display: "flex", gap: 12, alignItems: "center", fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 12 }}>
+            <span style={{ display: "flex", alignItems: "center", gap: 4 }}>
+              <span style={{ width: 10, height: 10, borderRadius: "50%", background: "#FF4D8D" }} />Critical
+            </span>
+            <span style={{ display: "flex", alignItems: "center", gap: 4 }}>
+              <span style={{ width: 10, height: 10, borderRadius: "50%", background: "#FFD046" }} />Moderate
+            </span>
+            <span style={{ display: "flex", alignItems: "center", gap: 4 }}>
+              <span style={{ width: 10, height: 10, borderRadius: "50%", background: "#2DCB73" }} />Low
+            </span>
           </div>
         </div>
 
-        <div className="bg-white rounded-2xl shadow-card overflow-hidden h-[calc(100%-80px)]">
+        <div style={{
+          background: "white", borderRadius: 20,
+          boxShadow: "0 4px 24px rgba(107,78,255,0.10)",
+          overflow: "hidden", height: "calc(100% - 80px)",
+        }}>
           {loading ? (
             <LoadingSpinner text="Loading map data..." />
           ) : (
@@ -115,19 +134,32 @@ export default function MapViewPage() {
                     }}
                   >
                     <Popup>
-                      <div className="p-1 max-w-xs">
-                        <h3 className="font-bold text-sm mb-1 capitalize">{need.category}</h3>
-                        <p className="text-xs text-gray-600 mb-2">{need.description}</p>
-                        <div className="flex items-center gap-2 mb-2">
+                      <div style={{ padding: 4, maxWidth: 240 }}>
+                        <h3 style={{ fontFamily: "'Nunito', sans-serif", fontWeight: 700, fontSize: 14, textTransform: "capitalize", marginBottom: 4 }}>
+                          {need.category}
+                        </h3>
+                        <p style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 12, color: "#6B7280", marginBottom: 8 }}>
+                          {need.description}
+                        </p>
+                        <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8 }}>
                           <UrgencyBadge score={need.urgencyScore} />
-                          <span className="text-xs text-gray-500">{need.locationName}</span>
+                          <span style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 11, color: "#9CA3AF" }}>
+                            {need.locationName}
+                          </span>
                         </div>
                         <button
                           onClick={() => handleAssign(need)}
                           disabled={assigning === need.id}
-                          className="w-full px-3 py-1.5 bg-blue-600 text-white text-xs rounded-lg hover:bg-blue-700 flex items-center justify-center gap-1"
+                          style={{
+                            width: "100%", padding: "6px 12px",
+                            background: "#6B4EFF", color: "white",
+                            border: "none", borderRadius: 8, cursor: "pointer",
+                            fontFamily: "'Nunito', sans-serif", fontWeight: 700, fontSize: 12,
+                            display: "flex", alignItems: "center", justifyContent: "center", gap: 4,
+                            transition: "all 0.2s ease",
+                          }}
                         >
-                          {assigning === need.id ? <Loader2 className="w-3 h-3 animate-spin" /> : <UserPlus className="w-3 h-3" />}
+                          {assigning === need.id ? <Loader2 size={12} className="animate-spin" /> : <UserPlus size={12} />}
                           Assign Volunteer
                         </button>
                       </div>

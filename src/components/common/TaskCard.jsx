@@ -1,8 +1,9 @@
+import { useState } from "react";
 import UrgencyBadge from "./UrgencyBadge";
 import { MapPin, Navigation, CheckCircle, XCircle } from "lucide-react";
 
 const categoryIcons = {
-  food: "🍲",
+  food: "🍱",
   medical: "🏥",
   shelter: "🏠",
   education: "📚",
@@ -18,17 +19,44 @@ export default function TaskCard({
   onComplete,
   onClick,
 }) {
+  const [accepted, setAccepted] = useState(false);
+
+  const handleAccept = (e) => {
+    e.stopPropagation();
+    setAccepted(true);
+    setTimeout(() => onAccept?.(), 600);
+  };
+
   return (
     <div
-      className="need-card cursor-pointer"
+      style={{
+        background: "white",
+        borderRadius: 20,
+        padding: 20,
+        boxShadow: "0 4px 24px rgba(107,78,255,0.10)",
+        border: "1.5px solid transparent",
+        cursor: "pointer",
+        transition: "all 0.2s ease",
+      }}
       onClick={() => onClick?.(need)}
       id={`task-card-${need?.id}`}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.transform = "translateY(-4px)";
+        e.currentTarget.style.boxShadow = "0 8px 32px rgba(107,78,255,0.18)";
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.transform = "translateY(0)";
+        e.currentTarget.style.boxShadow = "0 4px 24px rgba(107,78,255,0.10)";
+      }}
     >
       {/* Header */}
-      <div className="flex items-start justify-between mb-3">
-        <div className="flex items-center gap-2">
-          <span className="text-xl">{categoryIcons[need?.category] || "📋"}</span>
-          <span className="text-sm font-semibold text-gray-700 capitalize">
+      <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: 12 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+          <span style={{ fontSize: 20 }}>{categoryIcons[need?.category] || "📋"}</span>
+          <span style={{
+            fontFamily: "'Nunito', sans-serif", fontWeight: 700, fontSize: 16,
+            color: "#1A1A2E", textTransform: "capitalize",
+          }}>
             {need?.category}
           </span>
         </div>
@@ -36,84 +64,119 @@ export default function TaskCard({
       </div>
 
       {/* Description */}
-      <p className="text-gray-800 text-sm leading-relaxed mb-3 line-clamp-2">
+      <p style={{
+        fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 400, fontSize: 14,
+        color: "#1A1A2E", lineHeight: 1.6, marginBottom: 12,
+        display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden",
+      }}>
         {need?.description}
       </p>
 
-      {/* Meta */}
-      <div className="flex flex-wrap items-center gap-3 text-xs text-gray-500 mb-4">
-        <span className="flex items-center gap-1">
-          <MapPin className="w-3.5 h-3.5" />
-          {need?.locationName || "Unknown"}
+      {/* Meta chips */}
+      <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: 8, marginBottom: 16 }}>
+        <span style={{
+          display: "inline-flex", alignItems: "center", gap: 4,
+          padding: "4px 12px", borderRadius: 999,
+          background: "#EDE9FF", color: "#6B4EFF",
+          fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 500, fontSize: 13,
+        }}>
+          📍 {need?.locationName || "Unknown"}
         </span>
         {distance !== undefined && (
-          <span className="flex items-center gap-1 text-accent font-semibold">
-            <Navigation className="w-3.5 h-3.5" />
-            {distance} km away
+          <span style={{
+            display: "inline-flex", alignItems: "center", gap: 4,
+            padding: "4px 12px", borderRadius: 999,
+            background: "#FFF0EA", color: "#FF6B35",
+            fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 500, fontSize: 13,
+          }}>
+            🛵 {distance} km
           </span>
         )}
         {matchScore !== undefined && (
-          <span className="badge bg-primary-50 text-primary border border-primary-100">
-            Match: {matchScore}%
+          <span style={{
+            display: "inline-flex", alignItems: "center",
+            padding: "4px 14px", borderRadius: 999,
+            background: "linear-gradient(135deg, #6B4EFF, #8B72FF)",
+            color: "white",
+            fontFamily: "'Nunito', sans-serif", fontWeight: 700, fontSize: 13,
+          }}>
+            {matchScore}% Match
           </span>
         )}
       </div>
 
       {/* Task Status */}
       {taskStatus && (
-        <div className="mb-3">
-          <span
-            className={`badge ${
-              taskStatus === "accepted"
-                ? "bg-blue-100 text-blue-700"
-                : taskStatus === "done"
-                ? "bg-green-100 text-green-700"
-                : taskStatus === "declined"
-                ? "bg-red-100 text-red-700"
-                : "bg-yellow-100 text-yellow-700"
-            }`}
-          >
+        <div style={{ marginBottom: 12 }}>
+          <span style={{
+            display: "inline-flex", alignItems: "center",
+            padding: "3px 12px", borderRadius: 6,
+            fontFamily: "'Nunito', sans-serif", fontWeight: 700, fontSize: 11,
+            textTransform: "uppercase", letterSpacing: "0.05em",
+            ...(taskStatus === "accepted" ? { background: "#EDE9FF", color: "#6B4EFF" } :
+               taskStatus === "done" ? { background: "#E6F9EE", color: "#2DCB73" } :
+               taskStatus === "declined" ? { background: "#FFE8F2", color: "#FF4D8D" } :
+               { background: "#FFF0EA", color: "#FF6B35" }),
+          }}>
             {taskStatus}
           </span>
         </div>
       )}
 
       {/* Action buttons */}
-      <div className="flex gap-2 pt-2 border-t border-gray-50">
+      <div style={{ display: "flex", gap: 8, paddingTop: 12, borderTop: "1px solid #F3F4F6" }}>
         {onAccept && (
           <button
-            className="btn-success text-xs px-4 py-2 flex-1"
-            onClick={(e) => {
-              e.stopPropagation();
-              onAccept();
+            style={{
+              flex: 1, display: "inline-flex", alignItems: "center", justifyContent: "center",
+              gap: 6, padding: "10px 16px", borderRadius: 10, border: "none",
+              background: accepted ? "#2DCB73" : "#2DCB73", color: "white",
+              fontFamily: "'Nunito', sans-serif", fontWeight: 700, fontSize: 15,
+              cursor: "pointer", transition: "all 0.2s ease",
+              transform: accepted ? "scale(1.02)" : "scale(1)",
             }}
+            onClick={handleAccept}
+            onMouseEnter={(e) => { if (!accepted) e.target.style.transform = "scale(1.02)"; }}
+            onMouseLeave={(e) => { if (!accepted) e.target.style.transform = "scale(1)"; }}
           >
-            <CheckCircle className="w-4 h-4" />
-            Accept
+            {accepted ? (
+              <span style={{ animation: "springIn 0.4s cubic-bezier(0.34,1.56,0.64,1) forwards" }}>✓ Accepted</span>
+            ) : (
+              <><CheckCircle size={16} /> Accept</>
+            )}
           </button>
         )}
         {onDecline && (
           <button
-            className="btn-ghost text-xs px-4 py-2 flex-1 border border-gray-200"
-            onClick={(e) => {
-              e.stopPropagation();
-              onDecline();
+            style={{
+              flex: 1, display: "inline-flex", alignItems: "center", justifyContent: "center",
+              gap: 6, padding: "10px 16px", borderRadius: 10,
+              border: "1.5px solid #E5E7EB", background: "white", color: "#6B7280",
+              fontFamily: "'Nunito', sans-serif", fontWeight: 700, fontSize: 15,
+              cursor: "pointer", transition: "all 0.2s ease",
+            }}
+            onClick={(e) => { e.stopPropagation(); onDecline(); }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = "#FFF0EA";
+              e.currentTarget.style.borderColor = "#FF6B35";
+              e.currentTarget.style.color = "#FF6B35";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = "white";
+              e.currentTarget.style.borderColor = "#E5E7EB";
+              e.currentTarget.style.color = "#6B7280";
             }}
           >
-            <XCircle className="w-4 h-4" />
-            Decline
+            <XCircle size={16} /> Decline
           </button>
         )}
         {onComplete && (
           <button
-            className="btn-accent text-xs px-4 py-2 flex-1"
-            onClick={(e) => {
-              e.stopPropagation();
-              onComplete();
-            }}
+            className="btn-accent"
+            style={{ flex: 1, padding: "10px 16px", fontSize: 14, borderRadius: 10 }}
+            onClick={(e) => { e.stopPropagation(); onComplete(); }}
           >
-            <CheckCircle className="w-4 h-4" />
-            Mark Complete
+            <CheckCircle size={16} /> Mark Complete
           </button>
         )}
       </div>
